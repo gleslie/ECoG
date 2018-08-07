@@ -1,6 +1,5 @@
 %%% Import and Preprocess of ECoG Data using Matlab
 %%% v1 Grace Leslie 7 August 2018
-clear all
 close all
 
 %%% For you to update according to your local directory structure:
@@ -86,3 +85,6 @@ for it = 1:length(index)
 end
 
 save([end_data_dir '/trial_data'], 'trial_data')
+clear ALLCOM ALLEEG CURRENTSET CURRENTSTUDY data_dir EEG EEGfiles eeglab_dir ...
+    eeglabUpdater end_data_dir ext filepath idx1 idx2 ImportDataSetNumber index ...
+    it LASTCOM PLUGINLIST s STUDY subject_name tablenames tablesound11 timestamps_filename
