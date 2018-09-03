@@ -1,0 +1,85 @@
+% extract sum of all spikes for each stimulus from spikeCell and append to trial_data structure
+% (export as .csv)
+
+% finds the index of spikes for each channel (saves in spikeCells)
+for i = 1:length(spikeCell)
+    a = spikeCell{i,2};
+    spike_num = find(~cellfun(@isempty,a'));
+    spikeCell{i,4} = spike_num;
+end
+
+% finds unique spike time intervals for each stim type 
+timeIntervalDiff = 1/40*1000;
+for i = 1:length(spikeCell)
+    chIndexes = spikeCell{i, 4};
+    spikes = spikeCell{i, 2};
+    scheduler = {};
+    
+    for j = 1:length(chIndexes)
+        chan = chIndexes(1, j);
+        spikesOfChan = {spikes{chan, 1}(1, 1), spikes{chan, 1}(1, 2)};
+        
+        krows = size(spikesOfChan);
+        for k = 1:krows(1, 1)
+            
+            isSimilar = false;
+            lrows = size(scheduler);
+            for l = 1:lrows(1,1)    
+                diff1 = cellfun(@(x,y) abs(y-x),spikesOfChan(k,1),scheduler(l,1));
+                diff2 = cellfun(@(x,y) abs(y-x),spikesOfChan(k,2),scheduler(l,2));
+                if diff1 < timeIntervalDiff || diff2 < timeIntervalDiff
+                    isSimilar = true;
+                    break;
+                end
+            end
+            
+            if ~isSimilar
+                newI = lrows(1,1) + 1;
+                scheduler(newI, 1) = spikesOfChan(k, 1);
+                scheduler(newI, 2) = spikesOfChan(k, 2);
+                scheduler(newI, 3) = {chan};
+            end
+        end
+    end
+    
+    spikeCell{i, 5} = scheduler;
+end
+
+for m = 1:length(spikeCell)
+    mMax = size(spikeCell{m,5});
+    spikeCell{m,6} = mMax(1,1);
+end
+
+
+processed_data_dir = "/Users/robertjquon/Desktop/sound_study1/processed/spikeCell_NoSpikes";
+save(processed_data_dir, 'spikeCell', '-v7.3')
+
+
+% plot spikes
+spike_row = 1 % change row number here based on the trial you want to see
+spikes_plot(trial_data{spike_row, 1}, spikeCell{spike_row, 5})
+
+
+
+
+
+
+
+
+% NOTES
+% pull all info from each index for each channel (col4 and col2)
+    
+% remove duplicate or overlapping values from each stim type (check what
+% overlap range should be...)
+
+% combine similar stim types for each subject
+% export as .csv and comparison/stats in R
+
+
+
+
+
+
+
+
+
