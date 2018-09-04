@@ -7,10 +7,10 @@ clear ALLCOM ALLEEG CURRENTSET CURRENTSTUDY data_dir EEG EEGfiles eeglab_dir ...
 
 %%% For you to update according to your local directory structure:
 %%% Global File and Directory Names
-eeglab_dir = '/Users/robertjquon/Desktop/sound_study1/eeglab14_1_2b'
+eeglab_dir = 'dependencies/eeglab14_1_2b'
 data_dir = '/Users/robertjquon/Desktop/sound_study1/Downsampled'
 end_data_dir = '/Users/robertjquon/Desktop/sound_study1/processed'
-timestamps_filename = '/Users/robertjquon/Desktop/sound_study1/table_sound1.xlsx';
+timestamps_filename = 'table_sound1.xlsx';
 ImportDataSetNumber = 4; %% Change this to the dataset in the list you want to import.      %%%%%%%%%%
 %%% End of variables to update
 
