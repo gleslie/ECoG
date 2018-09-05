@@ -20,8 +20,8 @@ all_subjects = unique(tablesound11(:,1));
 all_conditions = unique((tablesound11(:,2)));
 
 %%% Select which conditions you wish to compare
-my_cond1 = [1 2 3]; % 40 Hz signals
-my_cond2 = 10; % Baseline
+my_cond1 = [3]; % 40 Hz signals
+my_cond2 = [10 11]; % Baseline
 
 %%% find indices corresponding to conditions
 cond1 = [];
@@ -34,9 +34,50 @@ for it = 1:length(my_cond2)
     cond2 = [cond2; find(strcmp(tablesound11(:,2),all_conditions(my_cond2(it))))];
 end
 
-
-for it = 1:length
+%%% Calculate mean trial data across each condition
+cond1_mean = []
+for it = 1:length(cond1)
+    if length(trial_data{it})>length(cond1_mean)
+        
+        padsize = length(trial_data{it})-length(cond1_mean);
+        new = zeros(size(trial_data{it}));
+        new(1:size(cond1_mean,1),1:size(cond1_mean,2)) = cond1_mean;
+        cond1_mean = new + trial_data{it};
+    elseif length(trial_data{it})<length(cond1_mean)
+        
+        padsize = length(cond1_mean)-length(trial_data{it});
+        new = zeros(size(cond1_mean));
+        new(1:size(trial_data{it},1),1:size(trial_data{it},2)) = trial_data{it};        
+        cond1_mean = new + cond1_mean;     
+    end
     
-[ersp,itc,powbase,times,freqs,erspboot,itcboot] = newtimef({trial_data{1} trial_data{2}},1,[-1000 2000],250);
+end
+
+cond1_mean = cond1_mean ./ it;
+
+%%% Again for condition 2...
+cond2_mean = []
+for it = 1:length(cond2)
+    if length(trial_data{it})>length(cond2_mean)
+        
+        padsize = length(trial_data{it})-length(cond2_mean);
+        new = zeros(size(trial_data{it}));
+        new(1:size(cond2_mean,1),1:size(cond2_mean,2)) = cond2_mean;
+        cond2_mean = new + trial_data{it};
+    elseif length(trial_data{it})<length(cond2_mean)
+        
+        padsize = length(cond2_mean)-length(trial_data{it});
+        new = zeros(size(cond2_mean));
+        new(1:size(trial_data{it},1),1:size(trial_data{it},2)) = trial_data{it};        
+        cond2_mean = new + cond2_mean;     
+    end
+    
+end
+
+cond2_mean = cond2_mean ./ it;
+cond2_mean = cond2_mean(1:size(cond1_mean,1,1:size(cond1_mean,2));
+    
+    
+[ersp,itc,powbase,times,freqs,erspboot,itcboot] = newtimef({cond1_mean cond2_mean},1,[-1000 2000],250);
 
 

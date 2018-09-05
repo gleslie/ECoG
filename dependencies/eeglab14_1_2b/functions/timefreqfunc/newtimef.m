@@ -2,7 +2,7 @@
 %           perturbation (ERSP) and inter-trial coherence (ITC) events across
 %           event-related trials (epochs) of a single input channel time series.
 %
-        * Also can compute and statistically compare transforms for two time
+        %* Also can compute and statistically compare transforms for two time
 %           series. Use this to compare ERSP and ITC means in two conditions.
 %
 %         * Uses either fixed-window, zero-padded FFTs (fastest), or wavelet
