@@ -20,8 +20,8 @@ all_subjects = unique(tablesound11(:,1));
 all_conditions = unique((tablesound11(:,2)));
 
 %%% Select which conditions you wish to compare
-my_cond1 = [3]; % 40 Hz signals
-my_cond2 = [10 11]; % Baseline
+my_cond1 = [7 5]; % 40 Hz signals
+my_cond2 = [4 6]; % Baseline
 
 %%% find indices corresponding to conditions
 cond1 = [];
@@ -75,7 +75,7 @@ for it = 1:length(cond2)
 end
 
 cond2_mean = cond2_mean ./ it;
-cond2_mean = cond2_mean(1:size(cond1_mean,1,1:size(cond1_mean,2));
+cond2_mean = cond2_mean(1:size(cond1_mean,1),1:size(cond1_mean,2));
     
     
 [ersp,itc,powbase,times,freqs,erspboot,itcboot] = newtimef({cond1_mean cond2_mean},1,[-1000 2000],250);
